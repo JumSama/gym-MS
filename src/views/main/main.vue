@@ -32,4 +32,12 @@ const mainStore = useMainStore()
 .transition {
   transition: width 0.3s;
 }
+.el-container {
+  height: 100vh;
+  overflow: hidden;
+}
+.el-aside {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 </style>

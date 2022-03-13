@@ -6,8 +6,7 @@
       @click="collapse"
     ></div>
 
-    <breadcrumb></breadcrumb>
-    <div class="flex-1"></div>
+    <breadcrumb :breadcrumbList="breadcrumbList"></breadcrumb>
   </div>
 </template>
 
@@ -15,8 +14,20 @@
 import breadcrumb from './cpts/breadcrumb.vue'
 import { useMainStore } from '@/stores/mainStore.js'
 const mainStore = useMainStore()
+
+// 侧边栏折叠开关
 const collapse = () => {
   mainStore.isCollapse = !mainStore.isCollapse
+}
+
+// 面包屑对照表
+const breadcrumbList = {
+  main: '首页',
+  user: '用户管理',
+  analysis: '数据面板',
+  right: '权限管理',
+  list: '列表',
+  display: '数据展示'
 }
 </script>
 
