@@ -2,9 +2,9 @@
   <el-table
     :data="tableData"
     @select="selected"
+    @select-all="allSelected"
     size="large"
     style="width: 100%"
-    ref="multiple"
   >
     <el-table-column type="selection" width="55" />
     <el-table-column prop="date" label="Date" width="180" />
@@ -38,23 +38,31 @@
 import { ref, watchEffect, watch, onMounted } from 'vue'
 const currentPage = ref(null)
 
-// 数据规模
-const userSize = ref(0)
-
-// 分页数据
-const userData = ref([])
+/**
+ * 模块: 数据模块
+ * 实现功能: 分页数据抓取
+ **/
+const userSize = ref(0) // 数据规模
+const userData = ref([]) // 用户数据
+// 页面切换事件
 const handle = (e) => {
   // 请求分页数据
   console.log(e)
 }
 
-// 多选
-const multiple = ref(null)
-
-// 当前选中列表proxy
-const currentSelected = ref([])
+/**
+ * 模块: 选择
+ * 实现功能: 单选多选
+ **/
+const selectedList = ref([])
+// 单选事件
+const allSelected = (payload) => {
+  console.log(payload)
+}
+// 全选事件
 const selected = (payload) => {
-  currentSelected.value = payload
+  selectedList.value = payload
+  console.log(selectedList.value)
 }
 
 const tableData = [

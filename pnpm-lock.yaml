@@ -6,6 +6,7 @@ specifiers:
   '@types/lodash-es': '*'
   '@vitejs/plugin-vue': ^2.2.2
   '@vue/eslint-config-prettier': ^7.0.0
+  echarts: ^5.3.1
   element-plus: ^2.1.0
   eslint: ^8.5.0
   eslint-plugin-vue: ^8.2.0
@@ -19,6 +20,7 @@ specifiers:
 dependencies:
   '@element-plus/icons-vue': 1.1.1_vue@3.2.31
   '@types/lodash-es': 4.17.6
+  echarts: 5.3.1
   element-plus: 2.1.0_1a412d14def5ff5ca1122000e4bee666
   pinia: 2.0.11_vue@3.2.31
   vue: 3.2.31
@@ -402,6 +404,13 @@ packages:
     dependencies:
       esutils: 2.0.3
     dev: true
+
+  /echarts/5.3.1:
+    resolution: {integrity: sha512-nWdlbgX3OVY0hpqncSvp0gDt1FRSKWn7lsWEH+PHmfCuvE0QmSw17pczQvm8AvawnLEkmf1Cts7YwQJZNC0AEQ==}
+    dependencies:
+      tslib: 2.3.0
+      zrender: 5.3.1
+    dev: false
 
   /element-plus/2.1.0_1a412d14def5ff5ca1122000e4bee666:
     resolution: {integrity: sha512-PQM3LMv5qKf0sS/k+PXuBcmKl1Eb3b7fxKPyFHZ6eodZcNykbEMcpLZefQkvmDr6calVnuQ7TUnTm7Tm9LJXvg==}
@@ -1271,6 +1280,10 @@ packages:
       is-number: 7.0.0
     dev: true
 
+  /tslib/2.3.0:
+    resolution: {integrity: sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==}
+    dev: false
+
   /type-check/0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
@@ -1390,3 +1403,9 @@ packages:
   /yallist/4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
     dev: true
+
+  /zrender/5.3.1:
+    resolution: {integrity: sha512-7olqIjy0gWfznKr6vgfnGBk7y4UtdMvdwFmK92vVQsQeDPyzkHW1OlrLEKg6GHz1W5ePf0FeN1q2vkl/HFqhXw==}
+    dependencies:
+      tslib: 2.3.0
+    dev: false

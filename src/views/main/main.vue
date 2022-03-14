@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-aside
-      :width="mainStore.isCollapse ? '60px' : '200px'"
+      :width="mainStore.isCollapse ? '63px' : '200px'"
       :class="{ transition: mainStore.isCollapse }"
     >
       <nav-side></nav-side>
