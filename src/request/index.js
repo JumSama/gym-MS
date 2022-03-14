@@ -21,7 +21,7 @@ const responseInterceptors = {
 }
 
 export default new JumRequest({
-  baseURL: 'http://127.0.0.1:8800',
+  // baseURL: 'http://127.0.0.1:8800',
   requestInterceptors,
   responseInterceptors
 })

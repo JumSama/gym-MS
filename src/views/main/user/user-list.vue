@@ -36,7 +36,7 @@
 
 <script setup>
 import { ref, watchEffect, watch, onMounted } from 'vue'
-const currentPage = ref(null)
+import request from '@/request'
 
 /**
  * 模块: 数据模块
@@ -44,10 +44,21 @@ const currentPage = ref(null)
  **/
 const userSize = ref(0) // 数据规模
 const userData = ref([]) // 用户数据
+const currentPage = ref(1)
+watchEffect(async () => {
+  userData.value = await request.post({
+    url: '/api/user/list',
+    data: {
+      page: currentPage.value,
+      size: '10'
+    }
+  })
+  console.log(userData.value)
+})
 // 页面切换事件
 const handle = (e) => {
   // 请求分页数据
-  console.log(e)
+  currentPage.value = e
 }
 
 /**
