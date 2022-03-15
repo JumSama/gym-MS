@@ -39,7 +39,16 @@
 
 <script setup>
 import { ref, watchEffect, watch, onMounted } from 'vue'
+import { ElMessageBox, ElMessage } from 'element-plus'
+import { useMainStore } from '@/stores/mainStore'
 import request from '@/request'
+import { useRouter } from 'vue-router'
+
+/**
+ * 全局变量
+ */
+const mainStore = useMainStore()
+const router = useRouter()
 /**
  * 模块: 数据模块
  * 实现功能: 分页数据抓取
@@ -88,38 +97,38 @@ const selected = (payload) => {
   console.log(selectedList.value)
 }
 
-const tableData = [
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  }
-]
+/**
+ * 模块: 删除
+ */
+const handleDelete = (index, row) => {
+  ElMessageBox.confirm('您确定要删除该用户吗?', '删除操作', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(async () => {
+      const flag = await mainStore.deleteUser('/api/user/delete', row.id)
+      if (flag) {
+        // 删除对应数据
+        userData.value.splice(index, 1)
+        ElMessage({
+          type: 'success',
+          message: '删除成功'
+        })
+      } else {
+        ElMessage({
+          type: 'error',
+          message: '删除失败'
+        })
+      }
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消删除'
+      })
+    })
+}
 </script>
 
 <style scoped>
