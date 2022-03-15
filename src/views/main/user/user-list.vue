@@ -1,6 +1,6 @@
 <template>
   <el-table
-    :data="userData"
+    :data="userList"
     @select="selected"
     @select-all="allSelected"
     size="large"
@@ -30,7 +30,7 @@
   <el-pagination
     background
     layout="prev, pager, next"
-    :total="userSize"
+    :total="userScale"
     :current-page="currentPage"
     @update:currentPage="handle"
     :hide-on-single-page="true"
@@ -38,49 +38,35 @@
 </template>
 
 <script setup>
-import { ref, watchEffect, watch, onMounted } from 'vue'
+import { ref, watchEffect, watch, onMounted, computed } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
-import { useMainStore } from '@/stores/mainStore'
-import request from '@/request'
+import { useUserStore } from '@/stores/userStore'
 import { useRouter } from 'vue-router'
 
 /**
  * 全局变量
  */
-const mainStore = useMainStore()
+const userStore = useUserStore()
 const router = useRouter()
 /**
  * 模块: 数据模块
  * 实现功能: 分页数据抓取
  **/
-const userSize = ref(0) // 数据规模
-const userData = ref([]) // 用户数据
-const currentPage = ref(1)
+const userScale = computed(() => userStore.userScale) // 数据规模
+const userList = computed(() => userStore.userList) // 用户数据
 // 获取数据规模
-request
-  .get({
-    url: '/api/user/scale'
-  })
-  .then(({ data }) => {
-    userSize.value = data[0].scale
-    console.log(userSize.value)
-  })
-// 页面切换请求数据
-watchEffect(async () => {
-  const { data } = await request.post({
-    url: '/api/user/list',
-    data: {
-      page: currentPage.value,
-      size: '10'
-    }
-  })
-  userData.value = data
-  console.log(userData.value)
-})
+userStore.getUserScale()
+
 // 页面切换事件
+const currentPage = ref(1)
 const handle = (e) => {
   currentPage.value = e
 }
+
+// 数据获取
+watchEffect(() => {
+  userStore.getUserList(currentPage.value)
+})
 
 /**
  * 模块: 选择
@@ -100,27 +86,14 @@ const selected = (payload) => {
 /**
  * 模块: 删除
  */
-const handleDelete = (index, row) => {
+const handleDelete = (index, { id }) => {
   ElMessageBox.confirm('您确定要删除该用户吗?', '删除操作', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
   })
-    .then(async () => {
-      const flag = await mainStore.deleteUser('/api/user/delete', row.id)
-      if (flag) {
-        // 删除对应数据
-        userData.value.splice(index, 1)
-        ElMessage({
-          type: 'success',
-          message: '删除成功'
-        })
-      } else {
-        ElMessage({
-          type: 'error',
-          message: '删除失败'
-        })
-      }
+    .then(() => {
+      userStore.deleteUser(index, id)
     })
     .catch(() => {
       ElMessage({
