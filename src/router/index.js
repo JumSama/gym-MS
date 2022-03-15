@@ -18,6 +18,11 @@ const router = createRouter({
           name: '用户管理'
         },
         {
+          path: '/main/user/create',
+          component: () => import('@/views/main/user/user-create.vue'),
+          name: '用户添加'
+        },
+        {
           path: '/main/right/list',
           component: () => import('@/views/main/right/right-list.vue'),
           name: '权限管理'

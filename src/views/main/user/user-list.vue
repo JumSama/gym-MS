@@ -38,16 +38,15 @@
 </template>
 
 <script setup>
-import { ref, watchEffect, watch, onMounted, computed } from 'vue'
+import { ref, watchEffect, computed } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/userStore'
-import { useRouter } from 'vue-router'
 
 /**
  * 全局变量
  */
 const userStore = useUserStore()
-const router = useRouter()
+
 /**
  * 模块: 数据模块
  * 实现功能: 分页数据抓取

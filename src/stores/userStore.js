@@ -61,6 +61,41 @@ export const useUserStore = defineStore({
         url: '/api/user/scale'
       })
       this.userScale = data[0].scale
+    },
+
+    // 创建用户信息
+    async createUserInfo(userInfo) {
+      const { data } = await request.post({
+        url: '/api/user/createInfo',
+        data: {
+          userInfo: {
+            user_id: userInfo.user_id,
+            phone: userInfo.phone,
+            email: userInfo.email,
+            avatarUrl: userInfo.avatarUrl,
+            nickName: userInfo.nickName
+          }
+        }
+      })
+      if (!data) ElMessage.error('用户信息录入出错!需要手动添加用户详情!')
+    },
+
+    // 创建用户
+    async createUser(userInfo) {
+      const { data } = await request.post({
+        url: '/api/user/create',
+        data: {
+          username: userInfo.username,
+          password: userInfo.password
+        }
+      })
+      // 创建用户信息
+      if (data.isCreated) {
+        await this.createUserInfo({ ...userInfo, user_id: data.user_id })
+        ElMessage.success('创建用户成功!')
+      } else {
+        ElMessage.error('创建用户失败!')
+      }
     }
   }
 })
