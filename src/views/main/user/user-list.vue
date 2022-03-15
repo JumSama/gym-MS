@@ -1,15 +1,18 @@
 <template>
   <el-table
-    :data="tableData"
+    :data="userData"
     @select="selected"
     @select-all="allSelected"
     size="large"
     style="width: 100%"
   >
     <el-table-column type="selection" width="55" />
-    <el-table-column prop="date" label="Date" width="180" />
-    <el-table-column prop="name" label="Name" width="180" />
-    <el-table-column prop="address" label="Address" />
+    <el-table-column prop="id" label="ID" width="55" />
+    <el-table-column prop="createTime" label="加入时间" width="250" />
+    <el-table-column prop="username" label="用户名" />
+    <el-table-column prop="nickName" label="昵称" />
+    <el-table-column prop="phone" label="联系方式" />
+    <el-table-column prop="role" label="角色" />
     <el-table-column label="Operations">
       <template #default="scope">
         <el-button size="small" @click="handleEdit(scope.$index, scope.row)"
@@ -27,7 +30,7 @@
   <el-pagination
     background
     layout="prev, pager, next"
-    :total="1000"
+    :total="userSize"
     :current-page="currentPage"
     @update:currentPage="handle"
     :hide-on-single-page="true"
@@ -37,7 +40,6 @@
 <script setup>
 import { ref, watchEffect, watch, onMounted } from 'vue'
 import request from '@/request'
-
 /**
  * 模块: 数据模块
  * 实现功能: 分页数据抓取
@@ -45,19 +47,29 @@ import request from '@/request'
 const userSize = ref(0) // 数据规模
 const userData = ref([]) // 用户数据
 const currentPage = ref(1)
+// 获取数据规模
+request
+  .get({
+    url: '/api/user/scale'
+  })
+  .then(({ data }) => {
+    userSize.value = data[0].scale
+    console.log(userSize.value)
+  })
+// 页面切换请求数据
 watchEffect(async () => {
-  userData.value = await request.post({
+  const { data } = await request.post({
     url: '/api/user/list',
     data: {
       page: currentPage.value,
       size: '10'
     }
   })
+  userData.value = data
   console.log(userData.value)
 })
 // 页面切换事件
 const handle = (e) => {
-  // 请求分页数据
   currentPage.value = e
 }
 
