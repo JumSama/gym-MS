@@ -98,6 +98,7 @@ export const useUserStore = defineStore({
       }
     },
 
+    // 查询用户
     async searchUser(key) {
       try {
         const { data } = await request.post({
@@ -111,6 +112,26 @@ export const useUserStore = defineStore({
       } catch (error) {
         ElMessage.error(error.message)
       }
+    },
+
+    // 查询用户通过ID
+    async getUserById(id) {
+      return request.post({
+        url: '/api/user/account',
+        data: {
+          id: id
+        }
+      })
+    },
+
+    // 修改用户
+    async updateUser(userInfo) {
+      await request.post({
+        url: '/api/user/update',
+        data: {
+          userInfo
+        }
+      })
     }
   }
 })

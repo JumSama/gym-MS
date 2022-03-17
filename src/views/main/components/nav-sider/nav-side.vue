@@ -21,12 +21,6 @@ const menuList = [
       { id: '2-1', title: '用户列表', url: '/main/user/list' },
       { id: '2-2', title: '用户添加', url: '/main/user/create' }
     ]
-  },
-  {
-    id: '3',
-    title: '权限管理',
-    icon: 'icon-quanxian',
-    children: [{ id: '3-1', title: '权限列表', url: '/main/right/list' }]
   }
 ]
 </script>

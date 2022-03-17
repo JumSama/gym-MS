@@ -45,11 +45,13 @@ import { ref, watchEffect, computed } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/userStore'
 import userSearch from './cpts/user-search.vue'
+import { useRouter } from 'vue-router'
 
 /**
  * 全局变量
  */
 const userStore = useUserStore()
+const router = useRouter()
 
 /**
  * 模块: 数据模块
@@ -111,6 +113,13 @@ const handleDelete = (index, { id }) => {
  */
 const handleSearch = (payload) => {
   userStore.searchUser(payload)
+}
+
+/**
+ * 模块:编辑
+ */
+const handleEdit = (index, row) => {
+  router.push(`/main/user/update?id=${row.id}`)
 }
 </script>
 
