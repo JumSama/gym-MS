@@ -1,46 +1,50 @@
 <template>
-  <el-table
-    :data="userList"
-    @select="selected"
-    @select-all="allSelected"
-    size="large"
-    style="width: 100%"
-  >
-    <el-table-column type="selection" width="55" />
-    <el-table-column prop="id" label="ID" width="55" />
-    <el-table-column prop="createTime" label="加入时间" width="250" />
-    <el-table-column prop="username" label="用户名" />
-    <el-table-column prop="nickName" label="昵称" />
-    <el-table-column prop="phone" label="联系方式" />
-    <el-table-column prop="role" label="角色" />
-    <el-table-column label="Operations">
-      <template #default="scope">
-        <el-button size="small" @click="handleEdit(scope.$index, scope.row)"
-          >Edit</el-button
-        >
-        <el-button
-          size="small"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)"
-          >Delete</el-button
-        >
-      </template>
-    </el-table-column>
-  </el-table>
-  <el-pagination
-    background
-    layout="prev, pager, next"
-    :total="userScale"
-    :current-page="currentPage"
-    @update:currentPage="handle"
-    :hide-on-single-page="true"
-  ></el-pagination>
+  <div class="user-list">
+    <user-search @search="handleSearch"></user-search>
+    <el-table
+      :data="userList"
+      @select="selected"
+      @select-all="allSelected"
+      size="large"
+      style="width: 100%"
+    >
+      <el-table-column type="selection" width="55" />
+      <el-table-column prop="id" label="ID" width="100" />
+      <el-table-column prop="createTime" label="加入时间" width="250" />
+      <el-table-column prop="username" label="用户名" />
+      <el-table-column prop="nickName" label="昵称" />
+      <el-table-column prop="phone" label="联系方式" />
+      <el-table-column prop="role" label="角色" />
+      <el-table-column label="Operations">
+        <template #default="scope">
+          <el-button size="small" @click="handleEdit(scope.$index, scope.row)"
+            >Edit</el-button
+          >
+          <el-button
+            size="small"
+            type="danger"
+            @click="handleDelete(scope.$index, scope.row)"
+            >Delete</el-button
+          >
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="userScale"
+      :current-page="currentPage"
+      @update:currentPage="handle"
+      :hide-on-single-page="true"
+    ></el-pagination>
+  </div>
 </template>
 
 <script setup>
 import { ref, watchEffect, computed } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/userStore'
+import userSearch from './cpts/user-search.vue'
 
 /**
  * 全局变量
@@ -101,9 +105,19 @@ const handleDelete = (index, { id }) => {
       })
     })
 }
+
+/**
+ * 模块:查询
+ */
+const handleSearch = (payload) => {
+  userStore.searchUser(payload)
+}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.user-list {
+  position: relative;
+}
 .el-table {
   margin-top: 20px;
 }

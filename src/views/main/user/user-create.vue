@@ -30,8 +30,9 @@
     </el-form-item>
     <el-form-item label="用户类型 ( type )" prop="type">
       <el-radio-group v-model="userInfo.type">
+        <el-radio border label="管理员" />
         <el-radio border label="会员" />
-        <el-radio border label="普通会员" />
+        <el-radio border label="普通用户" />
       </el-radio-group>
     </el-form-item>
     <el-form-item>
@@ -127,16 +128,9 @@ const userInfo = reactive({
   nickName: ''
 })
 
-// 提交表单
-function onSubmit() {
-  // 数据有误回调函数被调用
-  form.value.validate((valid) => {
-    if (valid) {
-      userStore.createUser(userInfo)
-    } else {
-      ElMessage.error('数据格式有误，请认真检查!')
-    }
-  })
+// 获取头像filename
+function onAvatarUrl(payload) {
+  userInfo.avatarUrl = payload
 }
 
 // 重置表单
@@ -144,9 +138,19 @@ function onReset() {
   form.value.resetFields()
 }
 
-// 获取头像filename
-function onAvatarUrl(payload) {
-  userInfo.avatarUrl = payload
+// 提交表单
+function onSubmit() {
+  // 数据有误回调函数被调用
+  form.value.validate(async (valid) => {
+    if (valid) {
+      const { id } = await userStore.createUser(userInfo, onReset)
+      await userStore.createRole(id, userInfo.type)
+      ElMessage.success('成功创建用户!')
+      onReset()
+    } else {
+      ElMessage.error('数据格式有误，请认真检查!')
+    }
+  })
 }
 </script>
 

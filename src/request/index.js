@@ -6,7 +6,7 @@ const requestInterceptors = {
     return value
   },
   error(err) {
-    console.log(err)
+    return err
   }
 }
 
@@ -17,6 +17,7 @@ const responseInterceptors = {
   },
   error(err) {
     console.log(err)
+    return err
   }
 }
 

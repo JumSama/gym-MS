@@ -63,38 +63,53 @@ export const useUserStore = defineStore({
       this.userScale = data[0].scale
     },
 
-    // 创建用户信息
-    async createUserInfo(userInfo) {
-      const { data } = await request.post({
-        url: '/api/user/createInfo',
-        data: {
-          userInfo: {
-            user_id: userInfo.user_id,
-            phone: userInfo.phone,
-            email: userInfo.email,
-            avatarUrl: userInfo.avatarUrl,
-            nickName: userInfo.nickName
+    // 创建用户角色
+    async createRole(id, role) {
+      try {
+        await request.post({
+          url: '/api/user/createRole',
+          data: {
+            id: id,
+            role: role
           }
-        }
-      })
-      if (!data) ElMessage.error('用户信息录入出错!需要手动添加用户详情!')
+        })
+      } catch (error) {
+        ElMessage.error(error.message)
+      }
     },
 
     // 创建用户
     async createUser(userInfo) {
-      const { data } = await request.post({
-        url: '/api/user/create',
-        data: {
-          username: userInfo.username,
-          password: userInfo.password
+      try {
+        const result = await request.post({
+          url: '/api/user/create',
+          data: {
+            userInfo
+          }
+        })
+        // 判断请求状态
+        if (result.status == 202) {
+          throw new Error(result.data)
+        } else if (result.status == 200) {
+          return result.data
         }
-      })
-      // 创建用户信息
-      if (data.isCreated) {
-        await this.createUserInfo({ ...userInfo, user_id: data.user_id })
-        ElMessage.success('创建用户成功!')
-      } else {
-        ElMessage.error('创建用户失败!')
+      } catch (error) {
+        ElMessage.error(error.message)
+      }
+    },
+
+    async searchUser(key) {
+      try {
+        const { data } = await request.post({
+          url: '/api/user/search',
+          data: {
+            key: key
+          }
+        })
+        this.userList = data
+        ElMessage.success('查询成功!')
+      } catch (error) {
+        ElMessage.error(error.message)
       }
     }
   }
